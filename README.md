@@ -14,6 +14,7 @@ model = Model([x,w], y)
 ```
 
 ## The Training procedure
+```
 import keras
 model, N, M = self.genModel()
 # train...
@@ -32,7 +33,7 @@ for epoch in range(epochs):
     #
     gradients = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip(gradients, model.trainable_variables))
-    
+```    
 ## Building
 
 The operation is built using [CMake](https://cmake.org/) and requires an appropriate version of Tensorflow to be installed. In order to get the necessary include directories containing the Tensorflow header files, the following trick is used (also see the [Tensorflow documentation](https://www.tensorflow.org/how_tos/adding_an_op/)):
