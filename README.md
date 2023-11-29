@@ -33,7 +33,43 @@ for epoch in range(epochs):
     #
     gradients = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip(gradients, model.trainable_variables))
-```    
+```
+## The 8'th Unit Test Output should be as follows
+```
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                Output Shape                 Param #   Connected to                  
+==================================================================================================
+ x (InputLayer)              [(None, 1)]                  0         []                            
+                                                                                                  
+ w (InputLayer)              [(None, 121)]                0         []                            
+                                                                                                  
+ tf.inner_product (TFOpLamb  (None, 1)                    0         ['x[0][0]',                   
+ da)                                                                 'w[0][0]']                   
+                                                                                                  
+==================================================================================================
+Total params: 0 (0.00 Byte)
+Trainable params: 0 (0.00 Byte)
+Non-trainable params: 0 (0.00 Byte)
+__________________________________________________________________________________________________
+None
+
+Start of epoch 0
+loss=5896649.5
+
+Start of epoch 1
+loss=6279839.0
+
+Start of epoch 2
+loss=6196921.0
+
+Start of epoch 3
+loss=5386027.0
+
+Start of epoch 4
+loss=6036963.0
+.
+```
 ## Building
 
 The operation is built using [CMake](https://cmake.org/) and requires an appropriate version of Tensorflow to be installed. In order to get the necessary include directories containing the Tensorflow header files, the following trick is used (also see the [Tensorflow documentation](https://www.tensorflow.org/how_tos/adding_an_op/)):
