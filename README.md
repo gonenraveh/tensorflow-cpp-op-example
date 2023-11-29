@@ -2,6 +2,37 @@
 
 This repository contains an example of a simple Tensorflow operation and its gradient both implemented in C++, as described in [this article](http://davidstutz.de/implementing-tensorflow-operations-in-c-including-gradients/).
 
+Gonen Raveh Says: I have tailored this codebase to Tensorflow2 and added a sample training procedure with this CustomOP as one of the layers. The network is very simple:
+```
+from tensorflow.keras.layers import Input
+from tensorflow.keras.models import Model
+N=121; M=64;BATCH=N
+x = Input(shape=(1), name='x')  # will be at training [N,1]
+w = Input(shape=(N), name='w')  # will be at training [M,N]
+y = inner_product_module.inner_product(x,w,name='inner1')  # [M,1]
+model = Model([x,w], y)
+```
+
+## The Training procedure
+import keras
+model, N, M = self.genModel()
+# train...
+epochs = 5
+optimizer = keras.optimizers.Adam(learning_rate=1e-3)
+loss_fn = keras.losses.MeanSquaredError()
+for epoch in range(epochs):
+    print("\nStart of epoch %d" % (epoch,))
+    with tf.GradientTape() as tape:
+        x = np.random.randint(10, size=(N,1))  # [M,N]*[N,1] = [M,1]
+        w = np.random.randint(10, size=(M,N))
+        y_true = np.random.randint(10, size=(M,1))  # not really "training". just an example
+        y_pred = model([x, w])
+        loss = loss_fn(y_true, y_pred)
+        print(f'loss={loss}')
+    #
+    gradients = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+    
 ## Building
 
 The operation is built using [CMake](https://cmake.org/) and requires an appropriate version of Tensorflow to be installed. In order to get the necessary include directories containing the Tensorflow header files, the following trick is used (also see the [Tensorflow documentation](https://www.tensorflow.org/how_tos/adding_an_op/)):
